@@ -14,7 +14,6 @@
     "mysql": "^2.16.0"
   },
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
-    "test": "mocha --timeout 10000"
+    "test": "mocha --exit"
   }
 }

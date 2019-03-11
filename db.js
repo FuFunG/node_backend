@@ -1,11 +1,7 @@
-var mysql = require('mysql');
+const mysql = require('mysql');
+const config = require('config')
 
-var connection = mysql.createConnection({
-    host     : 'www.ftfung.com',
-    user     : 'phpmyadmin',
-    password : 'some_pass',
-    database : 'eventApp'
-});
+const connection = mysql.createConnection(config.dbConfig);
 
 connection.connect(function(err) {
     if (err) throw err;

@@ -1,16 +1,36 @@
 const express = require('express')
 const app = express()
 const port = 3000
+const bodyParser = require('body-parser');
+const config = require('config');
+const morgan = require('morgan');
 
 // db
 const db = require('./db');
 
+if(config.util.getEnv('NODE_ENV') !== 'test') {
+    //use morgan to log at command line
+    app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
+}
+
+app.use(bodyParser.json());                                     
+app.use(bodyParser.urlencoded({extended: true}));               
+app.use(bodyParser.text());                                    
+app.use(bodyParser.json({ type: 'application/json'}));  
+
 // routers
-var users = require('./routers/users')
+var user = require('./routers/user')
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
-app.use('/users', users)
+app.route("/user")
+    .get(user.getUsers)
+    .post(user.register);
+
+// app.route("/book/:id")
+//     .get(book.getBook)
+//     .delete(book.deleteBook)
+//     .put(book.updateBook);
 
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)
@@ -18,3 +38,5 @@ app.use('/users', users)
 //   })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+module.exports = app;

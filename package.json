@@ -2,6 +2,7 @@
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
+    "mocha": "^6.0.2",
     "should": "^13.2.3",
     "supertest": "^4.0.0"
   },
@@ -14,6 +15,6 @@
   },
   "scripts": {
     "start": "SET NODE_ENV=dev && node server.js",
-    "test": "npm install && mocha --timeout 10000"
+    "test": "mocha --timeout 10000"
   }
 }

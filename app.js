@@ -27,6 +27,16 @@ app.route("/user")
     .get(user.getUsers)
     .post(user.register);
 
+app.route("/user/login")
+    .get(user.login);
+    
+app.route("/user/:id")
+    .get(user.getUser)
+    .put(user.updateUser)
+    .delete(user.deleteUser);
+
+
+
 // app.route("/book/:id")
 //     .get(book.getBook)
 //     .delete(book.deleteBook)

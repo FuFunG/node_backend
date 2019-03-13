@@ -7,3 +7,9 @@ notifications:
       - f789852@gmail.com
     on_success: always # default: change
     on_failure: always # default: always
+cache: npm
+secure: "uvFCoUmsMFR1CapjB8htqgqcjhOmHC2sqJf7s6x7NtawE2NOmu7zTrbI6hB/eSx0SqGVPJFxeXHo9vXOgY2gGa7OfRXxUd26h6HdRdsQ1tTcGNmXU9tkE/LgeIKf9618f3SRuiyNnLSTCcD7wgkoZ9N1hx9JdFWWxp63rtQ1692D2pdKE73qvMzWWi2CN3MRBLXXJ3IGapWwNtST5psKCymTGKtIZbJ3ekCOyYE0zOsC3FpP2adm8RvbDOOqQEAhMgFmcN7dUTj/O5kYrqA+N5B/HeoJTgKUzi1Q5RyPB0Ubkdl6wVmEoSbQHDgWUO3ylXjdoj1WipK9z3IjB4/zlwv5awqK+ysOHKRofZOGKtH5RT4QMzgtjOT5Svv0JbrCltOZuQ0p5EnAt6G4NZDmWUxbGZO/tOEfTFWC34cTbGGwZdZ7UpiUDDHOX55geG1ju4WBCOYMXOPznP6zDBdqfi5gaK2DoBkZgLbGOxu3Wul+aJjiIDkdRnioiNGgWAXGayveSBaoO8yQri+U6Qvmnvl9XAnrtSDfApRzKn5dvwiBgKLiyY3+0UjmFLdnrKZzWaiZuMNPr81CO832WRX5FtbsVEOCFhlMa0Its951EQdjLThuWQA4HJ9lJZvqBzKDd6eeBtLYxqTSV/KwLu9w2CHgEwNhvk4DiawGtP43MBs="
+after_success:
+  - "curl -o /tmp/travis-automerge https://raw.githubusercontent.com/cdown/travis-automerge/master/travis-automerge"
+  - "chmod a+x /tmp/travis-automerge"
+  - "BRANCHES_TO_MERGE_REGEX='^feature/' BRANCH_TO_MERGE_INTO=master GITHUB_REPO=FuFunG/node_backend /tmp/travis-automerge"

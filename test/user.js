@@ -239,7 +239,7 @@ describe('Users', () => {
         password: 'admin'
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -261,7 +261,7 @@ describe('Users', () => {
         username: 'admin'
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -282,7 +282,7 @@ describe('Users', () => {
       let user = {
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -307,7 +307,7 @@ describe('Users', () => {
         password: 'faksepassowrd'
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -324,7 +324,7 @@ describe('Users', () => {
         password: 'faksepassowrd'
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -341,7 +341,7 @@ describe('Users', () => {
         password: 'admin'
       }
       chai.request(app)
-          .get('/user/login')
+          .post('/user/login')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);

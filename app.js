@@ -28,7 +28,7 @@ app.route("/user")
     .post(user.register);
 
 app.route("/user/login")
-    .get(user.login);
+    .post(user.login);
     
 app.route("/user/:id")
     .get(user.getUser)

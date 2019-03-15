@@ -58,7 +58,7 @@ describe('Users', () => {
               res.body.result.should.be.eql(true);
               res.body.should.have.property('payload');
               res.body.payload.should.have.property('id');
-              res.body.payload.should.have.property('username');
+              res.body.payload.should.have.property('email');
               res.body.payload.should.have.property('createdAt');
             done();
           });
@@ -124,13 +124,12 @@ describe('Users', () => {
   });
 
   // register
-  describe('/POST user', () => {
-    it('it should not POST without username', (done) => {
+  describe('/POST user/register', () => {
+    it('it should not POST without email and password and name', (done) => {
       let user = {
-        password: 'admin'
       }
       chai.request(app)
-          .post('/user')
+          .post('/user/register')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -141,64 +140,24 @@ describe('Users', () => {
                 res.body.errors.should.have.property('messages');
                 res.body.errors.messages.should.be.eql('some fields missing');
                 res.body.errors.should.have.property('fields');
-                res.body.errors.fields.should.have.property('username');
-                res.body.errors.fields.username.should.be.eql('required');
-            done();
-          });
-    });
-
-    it('it should not POST without password', (done) => {
-      let user = {
-        username: 'admin'
-      }
-      chai.request(app)
-          .post('/user')
-          .send(user)
-          .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('result');
-                res.body.result.should.be.eql(false);
-                res.body.should.have.property('errors');
-                res.body.errors.should.have.property('messages');
-                res.body.errors.messages.should.be.eql('some fields missing');
-                res.body.errors.should.have.property('fields');
+                res.body.errors.fields.should.have.property('email');
+                res.body.errors.fields.email.should.be.eql('required');
                 res.body.errors.fields.should.have.property('password');
                 res.body.errors.fields.password.should.be.eql('required');
-            done();
-          });
-    });
-
-    it('it should not POST without username and password', (done) => {
-      let user = {
-      }
-      chai.request(app)
-          .post('/user')
-          .send(user)
-          .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('result');
-                res.body.result.should.be.eql(false);
-                res.body.should.have.property('errors');
-                res.body.errors.should.have.property('messages');
-                res.body.errors.messages.should.be.eql('some fields missing');
-                res.body.errors.should.have.property('fields');
-                res.body.errors.fields.should.have.property('username');
-                res.body.errors.fields.username.should.be.eql('required');
-                res.body.errors.fields.should.have.property('password');
-                res.body.errors.fields.password.should.be.eql('required');
+                res.body.errors.fields.should.have.property('name');
+                res.body.errors.fields.name.should.be.eql('required');
             done();
           });
     });
     
-    it('it should not POST with exising username', (done) => {
+    it('it should not POST with exising email', (done) => {
       let user = {
-        username: 'admin',
-        password: 'admin'
+        email: 'admin',
+        password: 'admin',
+        name: 'admin'
       }
       chai.request(app)
-          .post('/user')
+          .post('/user/register')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -207,18 +166,19 @@ describe('Users', () => {
                 res.body.result.should.be.eql(false);
                 res.body.should.have.property('errors');
                 res.body.errors.should.have.property('messages');
-                res.body.errors.messages.should.be.eql('username already exist');
+                res.body.errors.messages.should.be.eql('email already exist');
             done();
           });
     });
 
     it('it should POST a user', (done) => {
       let user = {
-        username: 'admin3',
-        password: 'admin3'
+        email: 'admin3',
+        password: 'admin3',
+        name: 'admin3'
       }
       chai.request(app)
-          .post('/user')
+          .post('/user/register')
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -233,8 +193,8 @@ describe('Users', () => {
     });
   });
 
-  describe('/GET user/login', () => {
-    it('it should not LOGIN without username', (done) => {
+  describe('/POST user/login', () => {
+    it('it should not LOGIN without email', (done) => {
       let user = {
         password: 'admin'
       }
@@ -250,15 +210,15 @@ describe('Users', () => {
                 res.body.errors.should.have.property('messages');
                 res.body.errors.messages.should.be.eql('some fields missing');
                 res.body.errors.should.have.property('fields');
-                res.body.errors.fields.should.have.property('username');
-                res.body.errors.fields.username.should.be.eql('required');
+                res.body.errors.fields.should.have.property('email');
+                res.body.errors.fields.email.should.be.eql('required');
             done();
           });
     });
 
     it('it should not LOGIN without password', (done) => {
       let user = {
-        username: 'admin'
+        email: 'admin'
       }
       chai.request(app)
           .post('/user/login')
@@ -278,7 +238,7 @@ describe('Users', () => {
           });
     });
 
-    it('it should not LOGIN without username and password', (done) => {
+    it('it should not LOGIN without email and password', (done) => {
       let user = {
       }
       chai.request(app)
@@ -293,8 +253,8 @@ describe('Users', () => {
                 res.body.errors.should.have.property('messages');
                 res.body.errors.messages.should.be.eql('some fields missing');
                 res.body.errors.should.have.property('fields');
-                res.body.errors.fields.should.have.property('username');
-                res.body.errors.fields.username.should.be.eql('required');
+                res.body.errors.fields.should.have.property('email');
+                res.body.errors.fields.email.should.be.eql('required');
                 res.body.errors.fields.should.have.property('password');
                 res.body.errors.fields.password.should.be.eql('required');
             done();
@@ -303,7 +263,7 @@ describe('Users', () => {
 
     it('it should not LOGIN with an non exist account', (done) => {
       let user = {
-        username: 'fakeusername',
+        email: 'fakeemail',
         password: 'faksepassowrd'
       }
       chai.request(app)
@@ -320,7 +280,7 @@ describe('Users', () => {
 
     it('it should not LOGIN with wroung password', (done) => {
       let user = {
-        username: 'admin',
+        email: 'admin',
         password: 'faksepassowrd'
       }
       chai.request(app)
@@ -337,7 +297,7 @@ describe('Users', () => {
 
     it('it should LOGIN', (done) => {
       let user = {
-        username: 'admin',
+        email: 'admin',
         password: 'admin'
       }
       chai.request(app)

@@ -24,7 +24,9 @@ var user = require('./routers/user')
 app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
 app.route("/user")
-    .get(user.getUsers)
+    .get(user.getUsers);
+
+app.route("/user/register")
     .post(user.register);
 
 app.route("/user/login")

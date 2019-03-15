@@ -4,7 +4,7 @@ var db = require('../db');
 const _ = require('lodash')
 
 function getUsers(req, res) {
-    var sql = `SELECT id, username, createdAt FROM users`
+    var sql = `SELECT id, email, createdAt FROM users`
     db.query(sql, function (err, result) {
       if (err) throw err;
       res.json(result);
@@ -13,7 +13,7 @@ function getUsers(req, res) {
 
 function getUser(req, res) {
   const { id } = req.params
-  var sql = `SELECT id, username, createdAt FROM users WHERE id = '${id}'`
+  var sql = `SELECT id, email, createdAt FROM users WHERE id = '${id}'`
   db.query(sql, function (err, result) {
     if (err) throw err;
     if (!_.isEmpty(result)) {
@@ -86,8 +86,8 @@ function deleteUser(req, res) {
 }
 
 function register(req, res) {
-  const { username, password } = req.body
-  if (_.isUndefined(username) || _.isUndefined(password) || _.isEmpty(username) || _.isEmpty(password)){
+  const { email, password, name } = req.body
+  if (_.isUndefined(email) || _.isEmpty(email) || _.isUndefined(password) || _.isEmpty(password) || _.isUndefined(name) || _.isEmpty(name)){
     let json = {
       result: false,
       errors: {
@@ -96,10 +96,10 @@ function register(req, res) {
         }
       }
     }
-    if (_.isUndefined(username) || _.isEmpty(username)) {
+    if (_.isUndefined(email) || _.isEmpty(email)) {
       json.errors.fields = {
         ...json.errors.fields,
-        username: 'required'
+        email: 'required'
       }
     }
     if (_.isUndefined(password) || _.isEmpty(password)) {
@@ -108,17 +108,23 @@ function register(req, res) {
         password: 'required'
       }
     }
+    if (_.isUndefined(name) || _.isEmpty(name)) {
+      json.errors.fields = {
+        ...json.errors.fields,
+        name: 'required'
+      }
+    }
     res.json(json);
   }
   else {
-    var sql = `SELECT id from users WHERE username = '${username}'`
+    var sql = `SELECT id from users WHERE email = '${email}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (_.isEmpty(result)){
-        sql = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`
+        sql = `INSERT INTO users (email, password, name) VALUES ('${email}', '${password}', '${name}')`
         db.query(sql, function (err, result) {
           if (err) throw err;
-          sql = `SELECT id from users WHERE username = '${username}' AND password = '${password}'`
+          sql = `SELECT id from users WHERE email = '${email}' AND password = '${password}' AND name = '${name}'`
           db.query(sql, function (err, result) {
             if (err) throw err;
             res.json({
@@ -134,7 +140,7 @@ function register(req, res) {
         res.json({
           result: false,
           errors: {
-            messages: 'username already exist'
+            messages: 'email already exist'
           }
         });
       }
@@ -143,8 +149,8 @@ function register(req, res) {
 }
 
 function login(req, res) {
-  const { username, password } = req.body
-  if (_.isUndefined(username) || _.isUndefined(password) || _.isEmpty(username) || _.isEmpty(password)){
+  const { email, password } = req.body
+  if (_.isUndefined(email) || _.isUndefined(password) || _.isEmpty(email) || _.isEmpty(password)){
     let json = {
       result: false,
       errors: {
@@ -153,10 +159,10 @@ function login(req, res) {
         }
       }
     }
-    if (_.isUndefined(username) || _.isEmpty(username)) {
+    if (_.isUndefined(email) || _.isEmpty(email)) {
       json.errors.fields = {
         ...json.errors.fields,
-        username: 'required'
+        email: 'required'
       }
     }
     if (_.isUndefined(password) || _.isEmpty(password)) {
@@ -168,7 +174,7 @@ function login(req, res) {
     res.json(json);
   }
   else {
-    var sql = `SELECT id from users WHERE username = '${username}' AND password = '${password}'`
+    var sql = `SELECT id from users WHERE email = '${email}' AND password = '${password}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)){

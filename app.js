@@ -4,6 +4,7 @@ const port = 3000
 const bodyParser = require('body-parser');
 const config = require('config');
 const morgan = require('morgan');
+var cors = require('cors');
 
 // db
 const db = require('./db');
@@ -12,6 +13,8 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     //use morgan to log at command line
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
+
+app.use(cors());
 
 app.use(bodyParser.json());                                     
 app.use(bodyParser.urlencoded({extended: true}));               

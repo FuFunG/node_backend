@@ -18,10 +18,5 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha --exit"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/fufung/node_backend.git"
-  },
-  "license": "Apache-2.0"
+  }
 }

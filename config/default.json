@@ -1,8 +1,8 @@
 {
     "dbConfig": {
-        "host": "www.ftfung.com",
-        "user": "phpmyadmin",
-        "password": "some_pass",
+        "host": "123.203.161.68",
+        "user": "admin",
+        "password": "password",
         "database": "eventApp"
     }
 }

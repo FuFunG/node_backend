@@ -2,7 +2,7 @@
     "dbConfig": {
         "host": "123.203.161.68",
         "user": "admin",
-        "password": "password",
+        "password": "passw0rd",
         "database": "eventApp"
     }
 }

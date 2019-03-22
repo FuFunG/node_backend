@@ -5,6 +5,10 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const morgan = require('morgan');
 var cors = require('cors');
+const crypto = require('crypto')
+var fs = require('fs');
+var http = require('http');
+var https = require('https');
 
 // db
 const db = require('./db');
@@ -52,6 +56,17 @@ app.route("/user/:id")
 //     res.status(404).send('Not Found')
 //   })
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+if(config.util.getEnv('NODE_ENV') !== 'test') {
+    var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
+    var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
+
+    var credentials = {key: privateKey, cert: certificate};
+    var httpsServer = https.createServer(credentials, app);
+    
+    httpsServer.listen(3000);
+}
+else {
+    app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+}
 
 module.exports = app;

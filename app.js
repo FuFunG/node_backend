@@ -27,6 +27,7 @@ app.use(bodyParser.json({ type: 'application/json'}));
 
 // routers
 var user = require('./routers/user')
+var event = require('./routers/event')
 
 app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
@@ -44,12 +45,12 @@ app.route("/user/:id")
     .put(user.updateUser)
     .delete(user.deleteUser);
 
+app.route("/event")
+    .get(event.getEvents)
+    .post(event.postEvent);
 
-
-// app.route("/book/:id")
-//     .get(book.getBook)
-//     .delete(book.deleteBook)
-//     .put(book.updateBook);
+app.route("/event/:id")
+    .get(event.getEvent);
 
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)
@@ -66,7 +67,7 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     httpsServer.listen(3000);
 }
 else {
-    app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+    app.listen(port, () => console.log(`OddJob listening on port ${port}!`))
 }
 
 module.exports = app;

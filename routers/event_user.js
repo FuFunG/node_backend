@@ -1,0 +1,115 @@
+const db = require('../db');
+const _ = require('lodash')
+// const moment = require('moment');
+
+function checkField(fields) {
+    return _.isUndefined(fields) || _.isEmpty(fields)
+}
+
+function checkMissing(listOfFields = []) {
+    let json = {
+        result: false,
+        errors: {
+          messages: 'some fields missing',
+          fields: {
+          }
+        }
+    }
+    listOfFields.forEach((field)=>{
+        if (checkField(_.values(field)[0])) {
+            json.errors.fields = {
+              ...json.errors.fields,
+              [_.keys(field)[0]]: 'required'
+            }
+        }
+    })
+    return json
+}
+
+function getEventUsers(req, res) {
+    const { id } = req.params
+    var sql = `SELECT * FROM Event_User WHERE eventId = '${id}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)) {
+        res.json({
+          result: true,
+          payload: result
+        });
+      }
+      else {
+        res.json({result: false})
+      }
+    });
+}
+
+function postEventUser(req, res) {
+    const { eventId, userId } = req.body
+    if (checkField(eventId) || checkField(userId)){
+        const json = checkMissing([
+            {eventId},
+            {userId}
+        ])
+        res.json(json);
+    }
+    else {
+        var sql = `SELECT id from Event_User WHERE eventId = '${eventId}' and userId = '${userId}'`
+        db.query(sql, function (err, result) {
+            if (err) throw err;
+            if (_.isEmpty(result)){
+                sql = `INSERT INTO Event_User (eventId, userId) VALUES ('${eventId}', '${userId}')`
+                db.query(sql, function (err, result) {
+                    if (err) throw err;
+                    res.json({
+                    result: true,
+                    payload: {
+                        id: result.insertId
+                    }
+                    });
+                });
+            }
+            else {
+                res.json({
+                  result: false,
+                  errors: {
+                    messages: 'This user already join the event.'
+                  }
+                });
+            }
+        })
+    }
+}
+
+function deleteEventUser(req, res) {
+    const { eventId, userId } = req.body
+    if (checkField(eventId) || checkField(userId)){
+        const json = checkMissing([
+            {eventId},
+            {userId}
+        ])
+        res.json(json);
+    }
+    else {
+        var sql = `SELECT id from Event_User WHERE eventId = '${eventId}' and userId = '${userId}'`
+        db.query(sql, function (err, result) {
+            if (err) throw err;
+            if (!_.isEmpty(result)){
+                sql = `DELETE FROM Event_User WHERE eventId = '${eventId}' and userId = '${userId}'`;
+                db.query(sql, function (err, result) {
+                    if (err) throw err;
+                    res.json({ result: true });
+                });
+            }
+            else {
+                res.json({
+                  result: false,
+                  errors: {
+                    messages: 'This user have not join the event.'
+                  }
+                });
+            }
+        });
+    }
+}
+
+module.exports = { getEventUsers, postEventUser, deleteEventUser };

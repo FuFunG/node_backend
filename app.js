@@ -28,10 +28,11 @@ app.use(bodyParser.json({ type: 'application/json'}));
 // routers
 var user = require('./routers/user')
 var event = require('./routers/event')
+var event_user = require('./routers/event_user')
 
 app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
-// User api
+// User API
 app.route("/user")
     .get(user.getUsers);
 
@@ -46,7 +47,7 @@ app.route("/user/:id")
     .put(user.updateUser)
     .delete(user.deleteUser);
 
-// Event api
+// Event API
 app.route("/event")
     .get(event.getEvents)
     .post(event.postEvent);
@@ -55,6 +56,12 @@ app.route("/event/:id")
     .get(event.getEvent)
     .put(event.updateEvent)
     .delete(event.deleteEvent);
+
+// Event User API
+app.route("/event_user")
+    .get(event_user.getEventUsers)
+    .post(event_user.postEventUser)
+    .delete(event_user.deleteEventUser);
 
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)

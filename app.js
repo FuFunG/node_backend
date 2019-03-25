@@ -31,6 +31,7 @@ var event = require('./routers/event')
 
 app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
+// User api
 app.route("/user")
     .get(user.getUsers);
 
@@ -45,12 +46,15 @@ app.route("/user/:id")
     .put(user.updateUser)
     .delete(user.deleteUser);
 
+// Event api
 app.route("/event")
     .get(event.getEvents)
     .post(event.postEvent);
 
 app.route("/event/:id")
-    .get(event.getEvent);
+    .get(event.getEvent)
+    .put(event.updateEvent)
+    .delete(event.deleteEvent);
 
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)

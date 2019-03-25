@@ -1,5 +1,6 @@
-var db = require('../db');
+const db = require('../db');
 const _ = require('lodash')
+const moment = require('moment');
 
 function checkField(fields) {
     return _.isUndefined(fields) || _.isEmpty(fields)
@@ -79,4 +80,62 @@ function postEvent(req, res) {
     }
 }
 
-module.exports = { getEvents, getEvent, postEvent };
+function updateEvent(req, res) {
+  const { id } = req.params
+  const { userId, title, description, startAt, endAt, address } = req.body
+  if (checkField(userId) || checkField(title) || checkField(description) || checkField(startAt) || checkField(endAt) || checkField(address)) {
+    const json = checkMissing([
+      {userId},
+      {title},
+      {description},
+      {startAt},
+      {endAt},
+      {address}
+    ])
+    res.json(json);
+  }
+  else {
+    var sql = `SELECT id from Event WHERE id = '${id}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)){
+        sql = `UPDATE Event SET
+          userId = '${userId}',
+          title = '${title}',
+          description = '${description}',
+          startAt = '${startAt}',
+          endAt = '${endAt}',
+          updatedAt = '${moment().format('YYYY-MM-DD HH:mm:ss')}',
+          address = '${address}'
+          WHERE id = '${id}'`;
+        db.query(sql, function (err, result) {
+          if (err) throw err;
+          res.json({ result: true });
+        });
+      }
+      else {
+        res.json({result: false});
+      }
+    });
+  }
+}
+
+function deleteEvent(req, res) {
+  const { id } = req.params
+  var sql = `SELECT id from Event WHERE id = '${id}'`
+  db.query(sql, function (err, result) {
+    if (err) throw err;
+    if (!_.isEmpty(result)){
+      sql = `DELETE FROM Event WHERE id = '${id}'`;
+      db.query(sql, function (err, result) {
+        if (err) throw err;
+        res.json({ result: true });
+      });
+    }
+    else {
+      res.json({result: false});
+    }
+  });
+}
+
+module.exports = { getEvents, getEvent, postEvent, updateEvent, deleteEvent };

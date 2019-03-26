@@ -27,7 +27,7 @@ function checkMissing(listOfFields = []) {
 }
 
 function getEvents(req, res) {
-    var sql = `SELECT * FROM event`
+    var sql = `SELECT * FROM Event`
     db.query(sql, function (err, result) {
       if (err) throw err;
       res.json(result);
@@ -36,7 +36,7 @@ function getEvents(req, res) {
 
 function getEvent(req, res) {
     const { id } = req.params
-    var sql = `SELECT * FROM users WHERE id = '${id}'`
+    var sql = `SELECT * FROM Event WHERE id = '${id}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)) {

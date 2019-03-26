@@ -96,6 +96,29 @@ describe('Event', () => {
                 done();
               });
         });
+        it('it should not POST a event with not exsiting userId', (done) => {
+            let event = {
+                userId: "999999999",
+                title: "test event",
+                description: "testing",
+                startAt: "2019-03-24 05:00:00",
+                endAt: "2019-03-24 06:00:00",
+                address: "Hong Kong"
+            }
+            chai.request(app)
+                .post('/event')
+                .send(event)
+                .end((err, res) => {
+                      res.should.have.status(200);
+                      res.body.should.be.a('object');
+                      res.body.should.have.property('result');
+                      res.body.result.should.be.eql(false);
+                      res.body.should.have.property('errors');
+                      res.body.errors.should.have.property('messages');
+                      res.body.errors.messages.should.eql('user not exsiting');
+                  done();
+                });
+          });
     
         it('it should POST a event', (done) => {
           let event = {

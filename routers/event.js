@@ -67,16 +67,31 @@ function postEvent(req, res) {
         res.json(json);
     }
     else {
-        sql = `INSERT INTO Event (userId, title, description, startAt, endAt, address) VALUES ('${userId}', '${title}', '${description}', '${startAt}', '${endAt}', '${address}')`
-        db.query(sql, function (err, result) {
-            if (err) throw err;
-            res.json({
-              result: true,
-              payload: {
-                  id: result.insertId
-              }
-            });
-        });
+      var sql = `SELECT id from users WHERE id = '${userId}'`
+      db.query(sql, function (err, result) {
+        if (err) throw err;
+        if (!_.isEmpty(result)){
+          sql = `INSERT INTO Event (userId, title, description, startAt, endAt, address) VALUES ('${userId}', '${title}', '${description}', '${startAt}', '${endAt}', '${address}')`
+          db.query(sql, function (err, result) {
+              if (err) throw err;
+              res.json({
+                result: true,
+                payload: {
+                    id: result.insertId
+                }
+              });
+          });
+        }
+        else{
+          res.json({
+            result: false,
+            errors: {
+              messages: 'user not exsiting'
+            }
+          });
+        }
+      })
+        
     }
 }
 

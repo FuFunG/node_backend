@@ -27,8 +27,58 @@ function checkMissing(listOfFields = []) {
 }
 
 function getEventUsers(req, res) {
+    var sql = `SELECT * FROM Event_User`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)) {
+        res.json({
+          result: true,
+          payload: result
+        });
+      }
+      else {
+        res.json({result: false})
+      }
+    });
+}
+
+function getEventUser(req, res) {
+    const { id } = req.params
+    var sql = `SELECT * FROM Event_User WHERE id = '${id}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)) {
+        res.json({
+          result: true,
+          payload: result
+        });
+      }
+      else {
+        res.json({result: false})
+      }
+    });
+}
+
+function getEventUserByEventId(req, res) {
     const { id } = req.params
     var sql = `SELECT * FROM Event_User WHERE eventId = '${id}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)) {
+        res.json({
+          result: true,
+          payload: result
+        });
+      }
+      else {
+        res.json({result: false})
+      }
+    });
+}
+
+function getEventUserByUserId(req, res) {
+    const { id } = req.params
+    var sql = `SELECT * FROM Event_User WHERE userId = '${id}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)) {
@@ -53,30 +103,59 @@ function postEventUser(req, res) {
         res.json(json);
     }
     else {
-        var sql = `SELECT id from Event_User WHERE eventId = '${eventId}' and userId = '${userId}'`
+        var sql = `SELECT id from Event WHERE id = '${eventId}'`
         db.query(sql, function (err, result) {
             if (err) throw err;
-            if (_.isEmpty(result)){
-                sql = `INSERT INTO Event_User (eventId, userId) VALUES ('${eventId}', '${userId}')`
-                db.query(sql, function (err, result) {
-                    if (err) throw err;
-                    res.json({
-                    result: true,
-                    payload: {
-                        id: result.insertId
+            if(_.isEmpty(result)) {
+                res.json({
+                    result: false,
+                    errors: {
+                        messages: 'Event or User not created'
                     }
-                    });
                 });
             }
             else {
-                res.json({
-                  result: false,
-                  errors: {
-                    messages: 'This user already join the event.'
-                  }
-                });
+                sql = `SELECT id from users WHERE id = '${userId}'`
+                db.query(sql, function (err, result) {
+                    if (err) throw err;
+                    if(_.isEmpty(result)) {
+                        res.json({
+                            result: false,
+                            errors: {
+                                messages: 'Event or User not created'
+                            }
+                        });
+                    }
+                    else {
+                        sql = `SELECT id from Event_User WHERE eventId = '${eventId}' and userId = '${userId}'`
+                        db.query(sql, function (err, result) {
+                            if (err) throw err;
+                            if (_.isEmpty(result)){
+                                sql = `INSERT INTO Event_User (eventId, userId) VALUES ('${eventId}', '${userId}')`
+                                db.query(sql, function (err, result) {
+                                    if (err) throw err;
+                                    res.json({
+                                    result: true,
+                                    payload: {
+                                        id: result.insertId
+                                    }
+                                    });
+                                });
+                            }
+                            else {
+                                res.json({
+                                    result: false,
+                                    errors: {
+                                        messages: 'This user already join the event.'
+                                    }
+                                });
+                            }
+                        })
+                    }
+                })
             }
         })
+        
     }
 }
 
@@ -112,4 +191,4 @@ function deleteEventUser(req, res) {
     }
 }
 
-module.exports = { getEventUsers, postEventUser, deleteEventUser };
+module.exports = { getEventUsers, getEventUser, getEventUserByEventId, getEventUserByUserId, postEventUser, deleteEventUser };

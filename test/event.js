@@ -96,6 +96,7 @@ describe('Event', () => {
                 done();
               });
         });
+        
         it('it should not POST a event with not exsiting userId', (done) => {
             let event = {
                 userId: "999999999",

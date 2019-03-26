@@ -63,6 +63,15 @@ app.route("/event_user")
     .post(event_user.postEventUser)
     .delete(event_user.deleteEventUser);
 
+app.route("/event_user/:id")
+   .get(event_user.getEventUser);
+
+app.route("/event_user/event/:id")
+    .get(event_user.getEventUserByEventId);
+
+app.route("/event_user/user/:id")
+    .get(event_user.getEventUserByUserId);
+
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)
 //     res.status(404).send('Not Found')

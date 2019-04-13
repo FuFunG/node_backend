@@ -16,7 +16,11 @@ describe('Event', () => {
               .get('/event')
               .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.a('array');
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('result');
+                    res.body.result.should.be.eql(true);
+                    res.body.should.have.property('payload');
+                    res.body.payload.should.be.a('array');
                     // res.body.length.should.be.eql(1);
                 done();
               });

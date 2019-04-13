@@ -7,7 +7,20 @@ function getUsers(req, res) {
     var sql = `SELECT id, email, createdAt FROM users`
     db.query(sql, function (err, result) {
       if (err) throw err;
-      res.json(result);
+      if (!_.isEmpty(result)){
+        res.json({
+          result: true,
+          payload: result
+        });
+      }
+      else{
+        res.json({
+          result: false,
+          errors: {
+            messages: 'no user found'
+          }
+        });
+      }
     });
 }
 

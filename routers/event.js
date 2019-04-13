@@ -44,7 +44,6 @@ function getEvents(req, res) {
           }
         });
       }
-      
     });
 }
 

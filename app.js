@@ -84,10 +84,12 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     var credentials = {key: privateKey, cert: certificate};
     var httpsServer = https.createServer(credentials, app);
     
-    httpsServer.listen(3000);
+    httpsServer.listen(port+1);
+    console.log(`HTTPS listening on port ${port+1}!`)
+    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
 }
 else {
-    app.listen(port, () => console.log(`OddJob listening on port ${port}!`))
+    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
 }
 
 module.exports = app;

@@ -237,4 +237,30 @@ describe('Event_User', () => {
                 });
         });
     });
+
+    describe('/GET event_user/event/:eventId/user/:userId', () => {
+        it('it should not GET a event_user with non exist eventId and userId', (done) => {
+            chai.request(app)
+                .get(`/event_user/event/${9999999}/user/${99999999}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('result');
+                    res.body.result.should.be.eql(false);
+                    done();
+                });
+        });
+
+        it('it should GET a event', (done) => {
+            chai.request(app)
+            .get(`/event_user/event/${1}/user/${1}`)
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a('object');
+                    res.body.should.have.property('result');
+                    res.body.result.should.be.eql(true);
+                    done();
+                });
+        });
+    });
 })

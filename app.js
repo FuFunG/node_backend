@@ -72,6 +72,9 @@ app.route("/event_user/event/:id")
 app.route("/event_user/user/:id")
     .get(event_user.getEventUserByUserId);
 
+app.route("/event_user/event/:eventId/user/:userId")
+    .get(event_user.checkUserJoined);
+
 // app.use(function (err, req, res, next) {
 //     console.error(err.stack)
 //     res.status(404).send('Not Found')

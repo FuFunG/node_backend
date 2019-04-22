@@ -82,7 +82,10 @@ function getEventUserByUserId(req, res) {
       Event_User.*,
       Event.title,
       Event.startAt,
-      Event.endAt FROM Event_User, Event WHERE Event_User.userId = '${id}' AND Event_User.eventId = Event.id`
+      Event.endAt,
+      Event.description,
+      Event.address
+      FROM Event_User, Event WHERE Event_User.userId = '${id}' AND Event_User.eventId = Event.id`
     // var sql = `SELECT * FROM Event_User WHERE userId = '${id}'`
     mixed = []
     db.query(sql,async function (err, result) {
@@ -166,7 +169,7 @@ function postEventUser(req, res) {
 }
 
 function deleteEventUser(req, res) {
-    const { eventId, userId } = req.body
+    const { eventId, userId } = req.params
     if (checkField(eventId) || checkField(userId)){
         const json = checkMissing([
             {eventId},

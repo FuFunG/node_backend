@@ -6,7 +6,7 @@ let app = require('../app');
 let should = chai.should();
 
 chai.use(chaiHttp);
-let event_id = "2"
+let event_id = "3"
 let user_id = "1"
 
 describe('Event_User', () => {
@@ -184,7 +184,7 @@ describe('Event_User', () => {
 
         it('it should POST a event_user', (done) => {
             let event_user = {
-                eventId: "2",
+                eventId: "3",
                 userId: "1"
             }
             chai.request(app)
@@ -204,13 +204,8 @@ describe('Event_User', () => {
 
     describe('/DELETE event_user', () => {
         it('it should not DELETE a event_user with non exist eventId and userId', (done) => {
-            let event_user = {
-                eventId: "99999999",
-                userId: "9999999"
-            }
             chai.request(app)
-                .delete(`/event_user`)
-                .send(event_user)
+                .delete(`/event_user/event/9999999/user/9999999999`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -221,13 +216,8 @@ describe('Event_User', () => {
         });
 
         it('it should DELETE a event given the id', (done) => {
-            let event_user = {
-                eventId: event_id,
-                userId: user_id
-            }
             chai.request(app)
-                .delete(`/event_user`)
-                .send(event_user)
+            .delete(`/event_user/event/${event_id}/user/${user_id}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');

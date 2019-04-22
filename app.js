@@ -60,8 +60,7 @@ app.route("/event/:id")
 // Event User API
 app.route("/event_user")
     .get(event_user.getEventUsers)
-    .post(event_user.postEventUser)
-    .delete(event_user.deleteEventUser);
+    .post(event_user.postEventUser);
 
 app.route("/event_user/:id")
    .get(event_user.getEventUser);
@@ -73,6 +72,7 @@ app.route("/event_user/user/:id")
     .get(event_user.getEventUserByUserId);
 
 app.route("/event_user/event/:eventId/user/:userId")
+    .delete(event_user.deleteEventUser)
     .get(event_user.checkUserJoined);
 
 // app.use(function (err, req, res, next) {

@@ -187,14 +187,15 @@ function login(req, res) {
     res.json(json);
   }
   else {
-    var sql = `SELECT id from users WHERE email = '${email}' AND password = '${password}'`
+    var sql = `SELECT id, name from users WHERE email = '${email}' AND password = '${password}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)){
         res.json({
           result: true,
           payload: {
-            id : result[0].id
+            id : result[0].id,
+            name: result[0].name
           }
         });
       }

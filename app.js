@@ -78,24 +78,24 @@ app.route("/event_user/event/:eventId/user/:userId")
     .delete(event_user.deleteEventUser)
     .get(event_user.checkUserJoined);
 
-// app.use(function (err, req, res, next) {
-//     console.error(err.stack)
-//     res.status(404).send('Not Found')
-//   })
+app.use(function (err, req, res, next) {
+    console.error(err.stack)
+    res.status(404).send('Not Found')
+  })
 
-// if(config.util.getEnv('NODE_ENV') !== 'test') {
-//     var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
-//     var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
+if(config.util.getEnv('NODE_ENV') !== 'test') {
+    var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
+    var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
 
-//     var credentials = {key: privateKey, cert: certificate};
-//     var httpsServer = https.createServer(credentials, app);
+    var credentials = {key: privateKey, cert: certificate};
+    var httpsServer = https.createServer(credentials, app);
     
-//     httpsServer.listen(port+1);
-//     console.log(`HTTPS listening on port ${port+1}!`)
-//     app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
-// }
-// else {
+    httpsServer.listen(port+1);
+    console.log(`HTTPS listening on port ${port+1}!`)
     app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
-// }
+}
+else {
+    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
+}
 
 module.exports = app;

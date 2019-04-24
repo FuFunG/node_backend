@@ -21,7 +21,7 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
 app.use(cors());
 
 app.use(bodyParser.json());                                     
-app.use(bodyParser.urlencoded({extended: true}));               
+app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));               
 app.use(bodyParser.text());                                    
 app.use(bodyParser.json({ type: 'application/json'}));  
 
@@ -46,6 +46,9 @@ app.route("/user/:id")
     .get(user.getUser)
     .put(user.updateUser)
     .delete(user.deleteUser);
+
+app.route("/user/photo/:id")
+    .put(user.updatePicture);
 
 // Event API
 app.route("/event")
@@ -80,19 +83,19 @@ app.route("/event_user/event/:eventId/user/:userId")
 //     res.status(404).send('Not Found')
 //   })
 
-if(config.util.getEnv('NODE_ENV') !== 'test') {
-    var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
-    var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
+// if(config.util.getEnv('NODE_ENV') !== 'test') {
+//     var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
+//     var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
 
-    var credentials = {key: privateKey, cert: certificate};
-    var httpsServer = https.createServer(credentials, app);
+//     var credentials = {key: privateKey, cert: certificate};
+//     var httpsServer = https.createServer(credentials, app);
     
-    httpsServer.listen(port+1);
-    console.log(`HTTPS listening on port ${port+1}!`)
+//     httpsServer.listen(port+1);
+//     console.log(`HTTPS listening on port ${port+1}!`)
+//     app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
+// }
+// else {
     app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
-}
-else {
-    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
-}
+// }
 
 module.exports = app;

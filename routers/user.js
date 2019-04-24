@@ -205,5 +205,41 @@ function login(req, res) {
   }
 }
 
+function updatePicture(req, res) {
+  const { id } = req.params
+  const { base64 } = req.body
+  let json = {
+    result: false,
+    errors: {
+      messages: 'some fields missing',
+      fields: {
+      }
+    }
+  }
+  if (_.isUndefined(base64) || _.isEmpty(base64)) {
+    json.errors.fields = {
+      ...json.errors.fields,
+      base64: 'required'
+    }
+    res.json(json);
+  }
+  else {
+    var sql = `SELECT id from users WHERE id = '${id}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)){
+        sql = `UPDATE users SET base64 = '${base64}' WHERE id = '${id}'`;
+        db.query(sql, function (err, result) {
+          if (err) throw err;
+          res.json({ result: true });
+        });
+      }
+      else {
+        res.json({result: false});
+      }
+    });
+  }
+}
+
 //export all the functions
-module.exports = { getUsers, getUser, register, login, updateUser, deleteUser };
+module.exports = { getUsers, getUser, register, login, updateUser, deleteUser, updatePicture };

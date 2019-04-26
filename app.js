@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const http_port = 80
+const https_port = 443
 const bodyParser = require('body-parser');
 const config = require('config');
 const morgan = require('morgan');
@@ -93,12 +94,12 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     var credentials = {key: privateKey, cert: certificate};
     var httpsServer = https.createServer(credentials, app);
     
-    httpsServer.listen(port+1);
-    console.log(`HTTPS listening on port ${port+1}!`)
-    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
+    httpsServer.listen(https_port);
+    console.log(`HTTPS listening on port ${https_port}!`)
+    app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
 }
 else {
-    app.listen(port, () => console.log(`HTTP listening on port ${port}!`))
+    app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
 }
 
 module.exports = app;

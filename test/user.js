@@ -1,5 +1,6 @@
 process.env.NODE_ENV = 'test';
 
+const config = require('config')
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let app = require('../app');
@@ -19,7 +20,7 @@ describe('Users', () => {
   describe('/GET user', () => {
       it('it should GET all the users', (done) => {
         chai.request(app)
-            .get('/user')
+            .get(`${config.api_prefix}/user`)
             .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -39,7 +40,7 @@ describe('Users', () => {
         id: 99999999999,
       }
       chai.request(app)
-          .get(`/user/${user.id}`)
+          .get(`${config.api_prefix}/user/${user.id}`)
           .end((err, res) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
@@ -54,7 +55,7 @@ describe('Users', () => {
         id: 3
       }
       chai.request(app)
-          .get(`/user/${user.id}`)
+          .get(`${config.api_prefix}/user/${user.id}`)
           .end((err, res) => {
               res.should.have.status(200);
               res.body.should.be.a('object');
@@ -75,7 +76,7 @@ describe('Users', () => {
         id: 4
       }
       chai.request(app)
-          .put(`/user/${user.id}`)
+          .put(`${config.api_prefix}/user/${user.id}`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -98,7 +99,7 @@ describe('Users', () => {
         newPassword: 'newPassword'
       }
       chai.request(app)
-          .put(`/user/${user.id}`)
+          .put(`${config.api_prefix}/user/${user.id}`)
           .send(user)
           .end((err, res) => {
               res.should.have.status(200);
@@ -115,7 +116,7 @@ describe('Users', () => {
         newPassword: 'newPassword'
       }
       chai.request(app)
-          .put(`/user/${user.id}`)
+          .put(`${config.api_prefix}/user/${user.id}`)
           .send(user)
           .end((err, res) => {
               res.should.have.status(200);
@@ -133,7 +134,7 @@ describe('Users', () => {
       let user = {
       }
       chai.request(app)
-          .post('/user/register')
+          .post(`${config.api_prefix}/user/register`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -161,7 +162,7 @@ describe('Users', () => {
         name: 'admin'
       }
       chai.request(app)
-          .post('/user/register')
+          .post(`${config.api_prefix}/user/register`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -182,7 +183,7 @@ describe('Users', () => {
         name: 'admin3'
       }
       chai.request(app)
-          .post('/user/register')
+          .post(`${config.api_prefix}/user/register`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -203,7 +204,7 @@ describe('Users', () => {
         password: 'admin'
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -225,7 +226,7 @@ describe('Users', () => {
         email: 'admin'
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -246,7 +247,7 @@ describe('Users', () => {
       let user = {
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -271,7 +272,7 @@ describe('Users', () => {
         password: 'faksepassowrd'
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -288,7 +289,7 @@ describe('Users', () => {
         password: 'faksepassowrd'
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -305,7 +306,7 @@ describe('Users', () => {
         password: 'admin'
       }
       chai.request(app)
-          .post('/user/login')
+          .post(`${config.api_prefix}/user/login`)
           .send(user)
           .end((err, res) => {
                 res.should.have.status(200);
@@ -326,7 +327,7 @@ describe('Users', () => {
         id: user_id
       }
       chai.request(app)
-          .delete(`/user/${user.id}`)
+          .delete(`${config.api_prefix}/user/${user.id}`)
           .send(user)
           .end((err, res) => {
               res.should.have.status(200);

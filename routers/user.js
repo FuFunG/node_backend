@@ -4,7 +4,7 @@ var db = require('../db');
 const _ = require('lodash')
 
 function getUsers(req, res) {
-    var sql = `SELECT id, email, createdAt FROM users`
+    var sql = `SELECT id, email, name, createdAt FROM users`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)){
@@ -26,7 +26,7 @@ function getUsers(req, res) {
 
 function getUser(req, res) {
   const { id } = req.params
-  var sql = `SELECT id, email, createdAt FROM users WHERE id = '${id}'`
+  var sql = `SELECT id, email, name, createdAt FROM users WHERE id = '${id}'`
   db.query(sql, function (err, result) {
     if (err) throw err;
     if (!_.isEmpty(result)) {

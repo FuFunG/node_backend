@@ -9,6 +9,8 @@ const crypto = require('crypto')
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger/doc.json')
 
 // db
 const db = require('./db');
@@ -24,6 +26,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true, limit: '50mb'}));               
 app.use(bodyParser.text());                                    
 app.use(bodyParser.json({ type: 'application/json'}));  
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 // routers
 var user = require('./routers/user')

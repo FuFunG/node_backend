@@ -1,0 +1,775 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "OddJob API",
+        "description": "Overview all api endpoint of this OddJob project",
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "",
+    "tags":[
+        {
+            "name": "Event",
+            "description": "API for Event in the system"
+        },
+        {
+            "name": "Group",
+            "description": "API for Group in the system"
+        },
+        {
+            "name": "User",
+            "description": "API for User in the system"
+        }
+    ],
+    "schemes":[
+        "https",
+        "http"
+    ],
+    "cosumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/event":{
+            "get":{
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Get all events in system",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/events"
+                        }
+                    }
+                }
+            },
+            "post":{
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Create a new event in system",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "Event that we want to create",
+                        "schema":{
+                            "$ref":"#/definitions/post_event"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    }
+                }
+            }
+        },
+        "/event/{eventId}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "eventId",
+                    "required": true,
+                    "description": "ID of the event we want",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Get event with given ID",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/event_response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Update event with given ID",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "Event field that we want to update",
+                        "schema":{
+                            "$ref":"#/definitions/post_event"
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Event"
+                ],
+                "summary": "Delete event with given ID",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/event_user":{
+            "get":{
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Get all groups details",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/groups"
+                        }
+                    }
+                }
+            },
+            "post":{
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Create new record that a user join a event",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "Which eventId and Which userId",
+                        "schema":{
+                            "$ref":"#/definitions/post_group"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    }
+                }
+            }
+        },
+        "/event_user/event/{eventId}":{
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "eventId",
+                    "required": true,
+                    "description": "ID of the event we want",
+                    "type": "string"
+                }
+            ],
+            "get":{
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Get all users joined the event by given eventId",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/groups"
+                        }
+                    }
+                }
+            }
+        },
+        "/event_user/user/{userId}":{
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "description": "ID of the user we want",
+                    "type": "string"
+                }
+            ],
+            "get":{
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Get all event with details that a user joined by given userId",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/group_destail_list"
+                        }
+                    }
+                }
+            }
+        },
+        "/event_user/event/{eventId}/user/{userId}":{
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "eventId",
+                    "required": true,
+                    "description": "ID of the event we want",
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "description": "ID of the user we want",
+                    "type": "string"
+                }
+            ],
+            "get":{
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Check user have join or not by given eventId and userId",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/group_checking_response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Group"
+                ],
+                "summary": "Quit event by given eventId and userId",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user": {
+            "get":{
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get all users in system",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/users"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post":{
+                "tags": [
+                    "User"
+                ],
+                "summary": "Create a new user in system",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "User email, password and name",
+                        "schema":{
+                            "$ref":"#/definitions/post_register"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/id"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/login": {
+            "post":{
+                "tags": [
+                    "User"
+                ],
+                "summary": "Check user is it in system",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "User email and password",
+                        "schema":{
+                            "$ref":"#/definitions/post_login"
+                        }
+                    }
+                ],
+                "produces":[
+                    "application/json"
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/login_response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "description": "ID of the user we want",
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Get user with given ID",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/user_response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user password with given ID",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "new user password",
+                        "schema":{
+                            "properties":{
+                                "newPassword": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Delete user with given ID",
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "user/photo/{userId}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "name": "userId",
+                    "required": true,
+                    "description": "ID of the user we want",
+                    "type": "string"
+                }
+            ],
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "Update user photo with given ID",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "new user photo",
+                        "schema":{
+                            "properties":{
+                                "base64": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "result": {
+                                    "type":"boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions":{
+        "id":{
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "event": {
+            "type": "object",
+            "properties":{
+                "id": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "endAt": {
+                    "type": "string"
+                },
+                "updateAt": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                }
+            }
+        },
+        "post_event": {
+            "type": "object",
+            "properties":{
+                "userId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "endAt": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                }
+            }
+        },
+        "events": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties":{
+                        "type": "object",
+                        "$ref": "#/definitions/event"
+                    }
+                }
+            }
+        },
+        "event_response": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "$ref": "#/definitions/event"
+                }
+            }
+        },
+        "group": {
+            "type": "object",
+            "properties":{
+                "id": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "groups": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties":{
+                        "$ref": "#/definitions/group"
+                    }
+                }
+            }
+        },
+        "group_detail": {
+            "type": "object",
+            "properties":{
+                "id": {
+                    "type": "string"
+                },
+                "eventId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "endAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                }
+            }
+        },
+        "group_destail_list": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties":{
+                        "$ref": "#/definitions/group_detail"
+                    }
+                }
+            }
+        },
+        "group_checking_response": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "$ref": "#/definitions/group"
+                }
+            }
+        },
+        "post_group": {
+            "type": "object",
+            "properties":{
+                "eventId": {
+                    "type": "string"
+                },
+                "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "user": {
+            "type": "object",
+            "properties":{
+                "id": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "users": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "type": "object",
+                    "additionalProperties":{
+                        "$ref": "#/definitions/user"
+                    }
+                }
+            }
+        },
+        "user_response": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "$ref": "#/definitions/user"
+                }
+            }
+        },
+        "post_register":{
+            "type": "object",
+            "properties":{
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "post_login":{
+            "type": "object",
+            "properties":{
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "login_response": {
+            "type": "object",
+            "properties":{
+                "result": {
+                    "type": "boolean"
+                },
+                "payload": {
+                    "properties": {
+                        "id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "base64": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

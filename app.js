@@ -20,6 +20,7 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     //use morgan to log at command line
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
+var router = express.Router();
 
 app.use(cors());
 
@@ -37,48 +38,48 @@ var event_user = require('./routers/event_user')
 app.get("/", (req, res) => res.json({message: "Welcome to EventApp!"}));
 
 // User API
-app.route("/user")
+router.route("/user")
     .get(user.getUsers);
 
-app.route("/user/register")
+router.route("/user/register")
     .post(user.register);
 
-app.route("/user/login")
+router.route("/user/login")
     .post(user.login);
     
-app.route("/user/:id")
+router.route("/user/:id")
     .get(user.getUser)
     .put(user.updateUser)
     .delete(user.deleteUser);
 
-app.route("/user/photo/:id")
+router.route("/user/photo/:id")
     .put(user.updatePicture);
 
 // Event API
-app.route("/event")
+router.route("/event")
     .get(event.getEvents)
     .post(event.postEvent);
 
-app.route("/event/:id")
+router.route("/event/:id")
     .get(event.getEvent)
     .put(event.updateEvent)
     .delete(event.deleteEvent);
 
 // Event User API
-app.route("/event_user")
+router.route("/event_user")
     .get(event_user.getEventUsers)
     .post(event_user.postEventUser);
 
-app.route("/event_user/:id")
+router.route("/event_user/:id")
    .get(event_user.getEventUser);
 
-app.route("/event_user/event/:id")
+router.route("/event_user/event/:id")
     .get(event_user.getEventUserByEventId);
 
-app.route("/event_user/user/:id")
+router.route("/event_user/user/:id")
     .get(event_user.getEventUserByUserId);
 
-app.route("/event_user/event/:eventId/user/:userId")
+router.route("/event_user/event/:eventId/user/:userId")
     .delete(event_user.deleteEventUser)
     .get(event_user.checkUserJoined);
 
@@ -86,6 +87,8 @@ app.use(function (err, req, res, next) {
     console.error(err.stack)
     res.status(404).send('Not Found')
   })
+
+app.use('/api/v1', router);
 
 if(config.util.getEnv('NODE_ENV') !== 'test') {
     var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();

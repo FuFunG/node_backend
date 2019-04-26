@@ -1,5 +1,6 @@
 process.env.NODE_ENV = 'test';
 
+const config = require('config')
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let app = require('../app');
@@ -13,7 +14,7 @@ describe('Event', () => {
     describe('/GET event', () => {
         it('it should GET all the events', (done) => {
           chai.request(app)
-              .get('/event')
+              .get(`${config.api_prefix}/event`)
               .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -33,7 +34,7 @@ describe('Event', () => {
             id: 99999999999,
           }
           chai.request(app)
-              .get(`/event/${event.id}`)
+              .get(`${config.api_prefix}/event/${event.id}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -48,7 +49,7 @@ describe('Event', () => {
               id: 1
             }
             chai.request(app)
-                .get(`/event/${event.id}`)
+                .get(`${config.api_prefix}/event/${event.id}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -74,7 +75,7 @@ describe('Event', () => {
           let event = {
           }
           chai.request(app)
-              .post('/event')
+              .post(`${config.api_prefix}/event`)
               .send(event)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -111,7 +112,7 @@ describe('Event', () => {
                 address: "Hong Kong"
             }
             chai.request(app)
-                .post('/event')
+                .post(`${config.api_prefix}/event`)
                 .send(event)
                 .end((err, res) => {
                       res.should.have.status(200);
@@ -135,7 +136,7 @@ describe('Event', () => {
               address: "Hong Kong"
           }
           chai.request(app)
-              .post('/event')
+              .post(`${config.api_prefix}/event`)
               .send(event)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -156,7 +157,7 @@ describe('Event', () => {
             id: 3
           }
           chai.request(app)
-              .put(`/event/${event.id}`)
+              .put(`${config.api_prefix}/event/${event.id}`)
               .send(event)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -194,7 +195,7 @@ describe('Event', () => {
             address: "Hong Kong2"
           }
           chai.request(app)
-              .put(`/event/${event.id}`)
+              .put(`${config.api_prefix}/event/${event.id}`)
               .send(event)
               .end((err, res) => {
                   res.should.have.status(200);
@@ -216,7 +217,7 @@ describe('Event', () => {
             address: "Hong Kong update"
           }
           chai.request(app)
-              .put(`/event/${event.id}`)
+              .put(`${config.api_prefix}/event/${event.id}`)
               .send(event)
               .end((err, res) => {
                   res.should.have.status(200);
@@ -234,7 +235,7 @@ describe('Event', () => {
             id: 9999999
           }
           chai.request(app)
-              .delete(`/event/${event.id}`)
+              .delete(`${config.api_prefix}/event/${event.id}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -248,7 +249,7 @@ describe('Event', () => {
             id: event_id
           }
           chai.request(app)
-              .delete(`/event/${event.id}`)
+              .delete(`${config.api_prefix}/event/${event.id}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');

@@ -1,5 +1,6 @@
 process.env.NODE_ENV = 'test';
 
+const config = require('config')
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let app = require('../app');
@@ -13,7 +14,7 @@ describe('Event_User', () => {
     describe('/GET event_user', () => {
         it('it should GET all the event_user', (done) => {
           chai.request(app)
-              .get('/event_user')
+              .get(`${config.api_prefix}/event_user`)
               .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -32,7 +33,7 @@ describe('Event_User', () => {
             id: 99999999999,
           }
           chai.request(app)
-              .get(`/event_user/${event_user.id}`)
+              .get(`${config.api_prefix}/event_user/${event_user.id}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -47,7 +48,7 @@ describe('Event_User', () => {
                 id: 1,
             }
             chai.request(app)
-                .get(`/event_user/${event_user.id}`)
+                .get(`${config.api_prefix}/event_user/${event_user.id}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -62,7 +63,7 @@ describe('Event_User', () => {
         it('it should not GET a event_user with non exist eventId', (done) => {
           let eventId = 999999
           chai.request(app)
-              .get(`/event_user/event/${eventId}`)
+              .get(`${config.api_prefix}/event_user/event/${eventId}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -75,7 +76,7 @@ describe('Event_User', () => {
         it('it should GET a event_user', (done) => {
             let eventId = 1
             chai.request(app)
-                .get(`/event_user/event/${eventId}`)
+                .get(`${config.api_prefix}/event_user/event/${eventId}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -92,7 +93,7 @@ describe('Event_User', () => {
         it('it should not GET a event_user with non exist userId', (done) => {
           let userId = 999999
           chai.request(app)
-              .get(`/event_user/event/${userId}`)
+              .get(`${config.api_prefix}/event_user/event/${userId}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.a('object');
@@ -105,7 +106,7 @@ describe('Event_User', () => {
         it('it should GET a event_user', (done) => {
             let userId = 1
             chai.request(app)
-                .get(`/event_user/event/${userId}`)
+                .get(`${config.api_prefix}/event_user/event/${userId}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -123,7 +124,7 @@ describe('Event_User', () => {
           let event_user = {
           }
           chai.request(app)
-              .post('/event_user')
+              .post(`${config.api_prefix}/event_user`)
               .send(event_user)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -148,7 +149,7 @@ describe('Event_User', () => {
                 userId: "999999"
             }
           chai.request(app)
-              .post('/event_user')
+              .post(`${config.api_prefix}/event_user`)
               .send(event_user)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -168,7 +169,7 @@ describe('Event_User', () => {
                 userId: "1"
             }
           chai.request(app)
-              .post('/event_user')
+              .post(`${config.api_prefix}/event_user`)
               .send(event_user)
               .end((err, res) => {
                     res.should.have.status(200);
@@ -188,7 +189,7 @@ describe('Event_User', () => {
                 userId: "1"
             }
             chai.request(app)
-                .post('/event_user')
+                .post(`${config.api_prefix}/event_user`)
                 .send(event_user)
                 .end((err, res) => {
                         res.should.have.status(200);
@@ -205,7 +206,7 @@ describe('Event_User', () => {
     describe('/DELETE event_user', () => {
         it('it should not DELETE a event_user with non exist eventId and userId', (done) => {
             chai.request(app)
-                .delete(`/event_user/event/9999999/user/9999999999`)
+                .delete(`${config.api_prefix}/event_user/event/9999999/user/9999999999`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -217,7 +218,7 @@ describe('Event_User', () => {
 
         it('it should DELETE a event given the id', (done) => {
             chai.request(app)
-            .delete(`/event_user/event/${event_id}/user/${user_id}`)
+            .delete(`${config.api_prefix}/event_user/event/${event_id}/user/${user_id}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -231,7 +232,7 @@ describe('Event_User', () => {
     describe('/GET event_user/event/:eventId/user/:userId', () => {
         it('it should not GET a event_user with non exist eventId and userId', (done) => {
             chai.request(app)
-                .get(`/event_user/event/${9999999}/user/${99999999}`)
+                .get(`${config.api_prefix}/event_user/event/${9999999}/user/${99999999}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -243,7 +244,7 @@ describe('Event_User', () => {
 
         it('it should GET a event', (done) => {
             chai.request(app)
-            .get(`/event_user/event/${1}/user/${1}`)
+            .get(`${config.api_prefix}/event_user/event/${1}/user/${1}`)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');

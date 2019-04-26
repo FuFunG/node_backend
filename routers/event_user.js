@@ -216,7 +216,7 @@ function checkUserJoined(req, res) {
           if (!_.isEmpty(result)){
             res.json({
               result: true,
-              payload: result
+              payload: result[0]
             });
           }
           else {

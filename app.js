@@ -90,6 +90,8 @@ app.use(function (err, req, res, next) {
 
 app.use('/api/v1', router);
 
+var server = http.createServer(app)
+
 if(config.util.getEnv('NODE_ENV') !== 'test') {
     var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
     var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
@@ -99,10 +101,15 @@ if(config.util.getEnv('NODE_ENV') !== 'test') {
     
     httpsServer.listen(https_port);
     console.log(`HTTPS listening on port ${https_port}!`)
-    app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
+    
+    server.listen(http_port);
+    console.log(`HTTP listening on port ${http_port}!`);
+    // app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
 }
 else {
-    app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
+    server.listen(http_port);
+    console.log(`HTTP listening on port ${http_port}!`);
+    // app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
 }
 
 module.exports = app;

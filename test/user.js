@@ -110,10 +110,12 @@ describe('Users', () => {
           });
     });
     
-    it('it should UPDATE a user given the id', (done) => {
+    it('it should UPDATE a user given the id, email and password', (done) => {
       let user = {
         id: 4,
-        newPassword: 'newPassword'
+        newPassword: 'newPassword',
+        email: 'user1@gmail.com',
+        password: 'newPassword'
       }
       chai.request(app)
           .put(`${config.api_prefix}/user/${user.id}`)
@@ -322,9 +324,11 @@ describe('Users', () => {
   });
 
   describe('/DELETE/:id user', () => {
-    it('it should DELETE a user given the id', (done) => {
+    it('it should DELETE a user given the id, email and password', (done) => {
       let user = {
-        id: user_id
+        id: user_id,
+        email: 'admin3',
+        password: 'admin3'
       }
       chai.request(app)
           .delete(`${config.api_prefix}/user/${user.id}`)

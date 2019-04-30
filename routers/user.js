@@ -3,6 +3,30 @@ var router = express.Router()
 var db = require('../db');
 const _ = require('lodash')
 
+function checkField(fields) {
+  return _.isUndefined(fields) || _.isEmpty(fields)
+}
+
+function checkMissing(listOfFields = []) {
+  let json = {
+      result: false,
+      errors: {
+        messages: 'some fields missing',
+        fields: {
+        }
+      }
+  }
+  listOfFields.forEach((field)=>{
+      if (checkField(_.values(field)[0])) {
+          json.errors.fields = {
+            ...json.errors.fields,
+            [_.keys(field)[0]]: 'required'
+          }
+      }
+  })
+  return json
+}
+
 function getUsers(req, res) {
     var sql = `SELECT id, email, name, createdAt FROM users`
     db.query(sql, function (err, result) {
@@ -45,24 +69,17 @@ function getUser(req, res) {
 
 function updateUser(req, res) {
   const { id } = req.params
-  const { newPassword } = req.body
-  let json = {
-    result: false,
-    errors: {
-      messages: 'some fields missing',
-      fields: {
-      }
-    }
-  }
-  if (_.isUndefined(newPassword) || _.isEmpty(newPassword)) {
-    json.errors.fields = {
-      ...json.errors.fields,
-      newPassword: 'required'
-    }
-    res.json(json);
+  const { newPassword, email, password } = req.body
+  if (checkField(newPassword) || checkField(email) || checkField(password)){
+      const json = checkMissing([
+          {newPassword},
+          {email},
+          {password}
+      ])
+      res.json(json);
   }
   else {
-    var sql = `SELECT id from users WHERE id = '${id}'`
+    var sql = `SELECT id from users WHERE id = '${id}' AND email = '${email}' AND password = '${password}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)){
@@ -81,21 +98,30 @@ function updateUser(req, res) {
 
 function deleteUser(req, res) {
   const { id } = req.params
-  // console.log(id)
-  var sql = `SELECT id from users WHERE id = '${id}'`
-  db.query(sql, function (err, result) {
-    if (err) throw err;
-    if (!_.isEmpty(result)){
-      sql = `DELETE FROM users WHERE id = '${id}'`;
-      db.query(sql, function (err, result) {
-        if (err) throw err;
-        res.json({ result: true });
-      });
-    }
-    else {
-      res.json({result: false});
-    }
-  });
+  const { email, password } = req.body
+  if (checkField(email) || checkField(password)){
+      const json = checkMissing([
+          {email},
+          {password}
+      ])
+      res.json(json);
+  }
+  else {
+    var sql = `SELECT id from users WHERE id = '${id}' AND email = '${email}' AND password = '${password}'`
+    db.query(sql, function (err, result) {
+      if (err) throw err;
+      if (!_.isEmpty(result)){
+        sql = `DELETE FROM users WHERE id = '${id}'`;
+        db.query(sql, function (err, result) {
+          if (err) throw err;
+          res.json({ result: true });
+        });
+      }
+      else {
+        res.json({result: false});
+      }
+    });
+  }
 }
 
 function register(req, res) {
@@ -209,24 +235,17 @@ function login(req, res) {
 
 function updatePicture(req, res) {
   const { id } = req.params
-  const { base64 } = req.body
-  let json = {
-    result: false,
-    errors: {
-      messages: 'some fields missing',
-      fields: {
-      }
-    }
-  }
-  if (_.isUndefined(base64) || _.isEmpty(base64)) {
-    json.errors.fields = {
-      ...json.errors.fields,
-      base64: 'required'
-    }
-    res.json(json);
+  const { base64, email, password } = req.body
+  if (checkField(base64) || checkField(email) || checkField(password)){
+      const json = checkMissing([
+          {base64},
+          {email},
+          {password}
+      ])
+      res.json(json);
   }
   else {
-    var sql = `SELECT id from users WHERE id = '${id}'`
+    var sql = `SELECT id from users WHERE id = '${id}' AND email = '${email}' AND password = '${password}'`
     db.query(sql, function (err, result) {
       if (err) throw err;
       if (!_.isEmpty(result)){

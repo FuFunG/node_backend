@@ -12,15 +12,17 @@ var http = require('http');
 var https = require('https');
 const swaggerUi = require('swagger-ui-express')
 const swaggerDocument = require('./swagger/doc.json')
+var router = express.Router();
 
-// db
-const db = require('./db');
+if (process.env.NODE_ENV !== 'production'){
+    var longjohn = require('longjohn');
+    longjohn.async_trace_limit = -1;
+}
 
 if(config.util.getEnv('NODE_ENV') !== 'test') {
     //use morgan to log at command line
     app.use(morgan('combined')); //'combined' outputs the Apache style LOGs
 }
-var router = express.Router();
 
 app.use(cors());
 
@@ -92,24 +94,24 @@ app.use('/api/v1', router);
 
 var server = http.createServer(app)
 
-if(config.util.getEnv('NODE_ENV') !== 'test') {
-    var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
-    var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
+// if(config.util.getEnv('NODE_ENV') !== 'test') {
+//     var privateKey = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/privkey.pem').toString();
+//     var certificate = fs.readFileSync('/etc/letsencrypt/live/www.ftfung.com/cert.pem').toString();
 
-    var credentials = {key: privateKey, cert: certificate};
-    var httpsServer = https.createServer(credentials, app);
+//     var credentials = {key: privateKey, cert: certificate};
+//     var httpsServer = https.createServer(credentials, app);
     
-    httpsServer.listen(https_port);
-    console.log(`HTTPS listening on port ${https_port}!`)
+//     httpsServer.listen(https_port);
+//     console.log(`HTTPS listening on port ${https_port}!`)
     
+//     server.listen(http_port);
+//     console.log(`HTTP listening on port ${http_port}!`);
+//     // app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
+// }
+// else {
     server.listen(http_port);
     console.log(`HTTP listening on port ${http_port}!`);
     // app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
-}
-else {
-    server.listen(http_port);
-    console.log(`HTTP listening on port ${http_port}!`);
-    // app.listen(http_port, () => console.log(`HTTP listening on port ${http_port}!`))
-}
+// }
 
 module.exports = app;

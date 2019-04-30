@@ -408,6 +408,12 @@
                             "properties":{
                                 "newPassword": {
                                     "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
                                 }
                             }
                         }
@@ -432,6 +438,23 @@
                     "User"
                 ],
                 "summary": "Delete user with given ID",
+                "parameters":[
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "dsecription": "new user password",
+                        "schema":{
+                            "properties":{
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                ],
                 "responses":{
                     "200":{
                         "description": "OK",
@@ -470,6 +493,12 @@
                         "schema":{
                             "properties":{
                                 "base64": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                                "password": {
                                     "type": "string"
                                 }
                             }
